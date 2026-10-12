@@ -3,69 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Психология - Счастливы на селе</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        @font-face { font-family: 'Gramatika'; src: local('Arial-BoldMT'), sans-serif; }
-        @font-face { font-family: 'Kommuna Demo'; src: local('Georgia'), serif; }
-        body { 
-            background-color: #F7F5F0; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23C4A47C' fill-opacity='0.12'%3E%3Cpath d='M17,8C17,8 19,8 20,9C21,10 20.5,12 20.5,12C20.5,12 19,12.5 18,12.5C18,12.5 17,14 17,14C17,14 17,16 16.5,17C16,18 15,18 15,18L13,15L12,22L11,15L9,18C9,18 8,18 7.5,17C7,16 7,14 7,14C7,14 6,12.5 6,12.5C5,12.5 3.5,12 3.5,12C3.5,12 3,10 4,9C5,8 7,8 7,8C7,8 6,6 7,5C8,4 9,4 9,4C9,4 10,5.5 10.5,6C11,6.5 11,8 11,8L12,10L13,8C13,8 13,6.5 13.5,6C14,5.5 15,4 15,4C15,4 16,4 17,5C18,6 17,8 17,8Z'/%3E%3C/svg%3E");
-            background-size: 60px 60px;
-            color: #2C2C2A; 
-            font-family: 'Kommuna Demo', serif; 
-        }
-        h1, h2, h3, .font-brand { font-family: 'Gramatika', sans-serif; }
-        .bg-polyana { background-color: #DDE59B; } .bg-luga { background-color: #7CBA74; } .bg-les { background-color: #3A7843; } .bg-schastye { background-color: #E37A99; }
-        .text-les { color: #3A7843; } .text-schastye { color: #E37A99; }
-        ::-webkit-scrollbar { display: none; }
-    </style>
+    <title>Психология</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { background-color: #F7F5F0; color: #2C2C2A; font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="min-h-screen flex flex-col max-w-md mx-auto shadow-2xl relative border-x border-[#EFECE6]">
-    
-    <header class="bg-[#F7F5F0]/95 backdrop-blur-xl border-b border-[#EFECE6] sticky top-0 z-50 px-5 pt-4 pb-3 flex justify-between items-center">
-        <div>
-            <span class="text-[9px] uppercase tracking-widest text-[#5C5346] font-semibold">забота о себе</span>
-            <h1 class="text-base font-bold text-les font-brand">психология</h1>
-        </div>
-        <div class="flex items-center gap-3">
-            <a href="favorites.html" class="text-xl hover:scale-110 transition-transform">❤️</a>
-        </div>
+<body class="min-h-screen flex flex-col max-w-md mx-auto bg-white shadow-2xl relative border-x border-[#EFECE6]">
+    <header class="bg-white/95 backdrop-blur-xl border-b border-[#EFECE6] sticky top-0 z-50 px-5 pt-4 pb-3">
+        <span class="text-[9px] uppercase tracking-widest text-[#5C5346] font-semibold">поддержка</span>
+        <h1 class="text-base font-bold text-[#4A5320]">психология</h1>
     </header>
-
-    <main class="flex-1 overflow-y-auto pb-24 pt-4 px-4 space-y-4">
-        <!-- Карточка 1 -->
-        <article class="bg-white rounded-3xl p-5 shadow-sm border border-[#EFECE6]">
-            <div class="w-10 h-10 rounded-full bg-schastye/20 flex items-center justify-center text-schastye mb-3 text-xl">🧘‍♀️</div>
-            <h2 class="font-bold text-base text-stone-800 font-brand mb-2">Синдром идеальной хозяйки</h2>
-            <p class="text-xs text-stone-600 leading-relaxed mb-3">Жизнь в селе часто диктует невидимые правила: дом должен блестеть, огород колоситься, а на столе — свежая выпечка. Как разрешить себе отдыхать и не винить себя за невыполотые сорняки?</p>
-            <button class="text-[10px] uppercase tracking-wide font-bold text-les border-b border-les/30 pb-0.5">Читать статью</button>
-        </article>
-
-        <!-- Карточка 2 -->
-        <article class="bg-white rounded-3xl p-5 shadow-sm border border-[#EFECE6]">
-            <div class="w-10 h-10 rounded-full bg-les/20 flex items-center justify-center text-les mb-3 text-xl">🌲</div>
-            <h2 class="font-bold text-base text-stone-800 font-brand mb-2">Тишина, которая лечит</h2>
-            <p class="text-xs text-stone-600 leading-relaxed mb-3">Почему после переезда из города мы первое время испытываем тревогу от тишины? Разбираем феномен «шумового голодания» и учимся слушать природу.</p>
-            <button class="text-[10px] uppercase tracking-wide font-bold text-les border-b border-les/30 pb-0.5">Читать статью</button>
-        </article>
-
-        <!-- Карточка 3 -->
-        <article class="bg-white rounded-3xl p-5 shadow-sm border border-[#EFECE6]">
-            <div class="w-10 h-10 rounded-full bg-polyana/30 flex items-center justify-center text-stone-700 mb-3 text-xl">🌱</div>
-            <h2 class="font-bold text-base text-stone-800 font-brand mb-2">Терапия землей</h2>
-            <p class="text-xs text-stone-600 leading-relaxed mb-3">Работа в саду — это не только физический труд, но и мощная практика заземления. Как превратить уход за растениями в медитацию и способ борьбы со стрессом.</p>
-            <button class="text-[10px] uppercase tracking-wide font-bold text-les border-b border-les/30 pb-0.5">Читать статью</button>
-        </article>
+    <main class="flex-1 p-4 pb-20 space-y-4">
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-[#EFECE6] space-y-3">
+            <div class="p-3.5 rounded-2xl bg-[#F7F5F0]">
+                <h4 class="font-semibold text-xs text-stone-800">Ресурс в тишине</h4>
+                <p class="text-[11px] text-stone-600 mt-1">Как заземляться и находить силы в буднях.</p>
+            </div>
+        </div>
     </main>
-
-    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#F7F5F0]/95 backdrop-blur-xl border-t border-[#EFECE6] py-2 px-3 flex justify-around items-center z-50 text-[10px]">
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-xl border-t border-[#EFECE6] py-2 px-3 flex justify-around items-center z-50 text-[10px]">
         <a href="index.html" class="flex flex-col items-center text-stone-400"><span>✨</span><span>Лента</span></a>
         <a href="blog.html" class="flex flex-col items-center text-stone-400"><span>📖</span><span>Блог</span></a>
         <a href="calendar.html" class="flex flex-col items-center text-stone-400"><span>📅</span><span>Календарь</span></a>
-        <a href="psychology.html" class="flex flex-col items-center text-les font-semibold"><span>🤍</span><span>Психология</span></a>
+        <a href="psychology.html" class="flex flex-col items-center text-[#4A5320] font-semibold"><span>🤍</span><span>Психология</span></a>
         <a href="recipes.html" class="flex flex-col items-center text-stone-400"><span>🍲</span><span>Рецепты</span></a>
     </nav>
-
 </body>
 </html>
