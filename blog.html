@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Блог - Счастливы на селе</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @font-face { font-family: 'Gramatika'; src: local('Arial-BoldMT'), sans-serif; }
+        @font-face { font-family: 'Kommuna Demo'; src: local('Georgia'), serif; }
+        body { background-color: #F7F5F0; color: #2C2C2A; font-family: 'Kommuna Demo', serif; }
+        h1, h2, h3, .font-brand { font-family: 'Gramatika', sans-serif; }
+        .bg-polyana { background-color: #DDE59B; } .bg-luga { background-color: #7CBA74; } .bg-les { background-color: #3A7843; } .bg-schastye { background-color: #E37A99; }
+        .text-les { color: #3A7843; } .text-schastye { color: #E37A99; }
+        ::-webkit-scrollbar { display: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col max-w-md mx-auto bg-white shadow-2xl relative border-x border-[#EFECE6]">
+    <header class="bg-white/95 backdrop-blur-xl border-b border-[#EFECE6] sticky top-0 z-50 px-5 pt-4 pb-3 flex justify-between items-center">
+        <div>
+            <span class="text-[9px] uppercase tracking-widest text-[#5C5346] font-semibold">сообщество ВКонтакте</span>
+            <h1 class="text-base font-bold text-les font-brand">наш блог</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="favorites.html" class="text-xl hover:scale-110 transition-transform">❤️</a>
+            <div class="w-9 h-9 rounded-full flex items-center justify-center overflow-hidden bg-polyana">
+                <img src="assets/logo.png" alt="Лого" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40x40/DDE59B/3A7843?text=🌾'">
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto pb-16" id="blog-container"></main>
+
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/95 backdrop-blur-xl border-t border-[#EFECE6] py-2 px-3 flex justify-around items-center z-50 text-[10px]">
+        <a href="index.html" class="flex flex-col items-center text-stone-400"><span>✨</span><span>Лента</span></a>
+        <a href="blog.html" class="flex flex-col items-center text-les font-semibold"><span>📖</span><span>Блог</span></a>
+        <a href="calendar.html" class="flex flex-col items-center text-stone-400"><span>📅</span><span>Календарь</span></a>
+        <a href="psychology.html" class="flex flex-col items-center text-stone-400"><span>🤍</span><span>Психология</span></a>
+        <a href="recipes.html" class="flex flex-col items-center text-stone-400"><span>🍲</span><span>Рецепты</span></a>
+    </nav>
+
+    <script>
+        const blogPosts = [
+            { 
+                id: 'vk-post-1', 
+                images: ['assets/post1-1.jpg', 'assets/post1-2.jpg', 'assets/post1-3.jpg', 'assets/post1-4.jpg', 'assets/post1-5.jpg', 'assets/post1-6.jpg'], 
+                tag: '#красота_счастливых', 
+                tagColor: 'bg-luga', 
+                title: '5 способов носить косынку этой осенью', 
+                text: 'Косынка снова вернулась в повседневные образы. Осенью она особенно удобна: может заменить лёгкий шарф, добавить цвета базовому плащу или пальто и сделать даже самый простой образ интереснее.\nСобрали 5 способов носить косынку этой осенью: на голове, на шее, на поясе, поверх жакета и просто на плече.\nА вы как носите косынки — по-классике или любите придумывать что-то необычное?' 
+            }
+        ];
+
+        function renderBlog() {
+            const container = document.getElementById('blog-container');
+            const favorites = JSON.parse(localStorage.getItem('favPosts')) || [];
+            
+            container.innerHTML = blogPosts.map(post => {
+                const isLiked = favorites.some(fav => fav.id === post.id);
+                const heartIcon = isLiked ? '❤️' : '🖤';
+                
+                const postDataStr = encodeURIComponent(JSON.stringify({
+                    id: post.id,
+                    img: post.images[0], 
+                    tag: post.tag,
+                    tagColor: post.tagColor,
+                    title: post.title,
+                    text: post.text
+                }));
+
+                const imagesHtml = post.images.map(img => 
+                    `<img src="${img}" class="min-w-full aspect-square object-contain bg-[#F7F5F0] snap-center" alt="Фото" onerror="this.src='https://via.placeholder.com/600x600/F7F5F0/2C2C2A?text=Фото'">`
+                ).join('');
+
+                return `
+                <article class="bg-white border-b border-[#EFECE6] pb-4 relative">
+                    <div id="carousel-${post.id}" class="relative flex overflow-x-auto snap-x snap-mandatory hide-scrollbar bg-[#F7F5F0]">
+                        ${imagesHtml}
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 ${post.tagColor} text-white rounded-full text-[10px] shadow-sm font-brand z-10">${post.tag}</span>
+                    <button onclick="scrollCarousel('${post.id}', -1)" class="absolute left-2 top-[30vh] -translate-y-1/2 bg-white/80 w-8 h-8 rounded-full flex items-center justify-center text-stone-600 shadow-md z-10">❮</button>
+                    <button onclick="scrollCarousel('${post.id}', 1)" class="absolute right-2 top-[30vh] -translate-y-1/2 bg-white/80 w-8 h-8 rounded-full flex items-center justify-center text-stone-600 shadow-md z-10">❯</button>
+                    
+                    <div class="px-4 pt-3 pb-1 flex gap-4 items-center">
+                        <button onclick="toggleLike(this, '${postDataStr}')" class="text-2xl transition-transform hover:scale-110">${heartIcon}</button>
+                        <button class="text-[22px] text-stone-300 hover:text-stone-500 transition-colors">💬</button>
+                    </div>
+
+                    <div class="px-5 space-y-1">
+                        <h3 class="font-bold text-base text-stone-800 font-brand">${post.title}</h3>
+                        <p id="desc-${post.id}" class="text-xs text-stone-600 leading-relaxed line-clamp-2 transition-all duration-300 whitespace-pre-wrap">${post.text}</p>
+                        <button onclick="toggleText('desc-${post.id}', this)" class="text-[10px] text-stone-400 font-semibold mt-1 uppercase tracking-wide">ещё...</button>
+                    </div>
+                </article>`;
+            }).join('');
+        }
+
+        function scrollCarousel(id, direction) {
+            const container = document.getElementById('carousel-' + id);
+            const scrollAmount = container.clientWidth;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function toggleText(id, btn) {
+            const el = document.getElementById(id);
+            el.classList.toggle('line-clamp-2');
+            btn.innerText = el.classList.contains('line-clamp-2') ? 'ещё...' : 'скрыть';
+        }
+
+        function toggleLike(btn, postDataStr) {
+            const post = JSON.parse(decodeURIComponent(postDataStr));
+            let favorites = JSON.parse(localStorage.getItem('favPosts')) || [];
+            const index = favorites.findIndex(fav => fav.id === post.id);
+
+            if (index !== -1) {
+                favorites.splice(index, 1);
+                btn.innerHTML = '🖤';
+            } else {
+                favorites.push(post);
+                btn.innerHTML = '❤️';
+            }
+            localStorage.setItem('favPosts', JSON.stringify(favorites));
+        }
+
+        renderBlog();
+    </script>
+</body>
+</html>

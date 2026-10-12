@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Счастливы на селе</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    <style>
+        @font-face { font-family: 'Gramatika'; src: local('Arial-BoldMT'), sans-serif; }
+        @font-face { font-family: 'Kommuna Demo'; src: local('Georgia'), serif; }
+        body { 
+            background-color: #F7F5F0; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23C4A47C' fill-opacity='0.12'%3E%3Cpath d='M17,8C17,8 19,8 20,9C21,10 20.5,12 20.5,12C20.5,12 19,12.5 18,12.5C18,12.5 17,14 17,14C17,14 17,16 16.5,17C16,18 15,18 15,18L13,15L12,22L11,15L9,18C9,18 8,18 7.5,17C7,16 7,14 7,14C7,14 6,12.5 6,12.5C5,12.5 3.5,12 3.5,12C3.5,12 3,10 4,9C5,8 7,8 7,8C7,8 6,6 7,5C8,4 9,4 9,4C9,4 10,5.5 10.5,6C11,6.5 11,8 11,8L12,10L13,8C13,8 13,6.5 13.5,6C14,5.5 15,4 15,4C15,4 16,4 17,5C18,6 17,8 17,8Z'/%3E%3C/svg%3E");
+            background-size: 60px 60px;
+            color: #2C2C2A; 
+            font-family: 'Kommuna Demo', serif; 
+        }
+        h1, h2, h3, .font-brand { font-family: 'Gramatika', sans-serif; }
+        .bg-polyana { background-color: #DDE59B; } .bg-luga { background-color: #7CBA74; } .bg-les { background-color: #3A7843; } .bg-schastye { background-color: #E37A99; }
+        .text-les { color: #3A7843; } .text-schastye { color: #E37A99; }
+        ::-webkit-scrollbar { display: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col max-w-md mx-auto shadow-2xl relative border-x border-[#EFECE6]">
+    
+    <header class="bg-[#F7F5F0]/95 backdrop-blur-xl border-b border-[#EFECE6] sticky top-0 z-50 px-5 pt-4 pb-3 flex justify-between items-center">
+        <div>
+            <span class="text-[9px] uppercase tracking-widest text-[#5C5346] font-semibold">медиа о жизни счастливых женщин на селе</span>
+            <h1 class="text-base font-bold text-les font-brand">счастливы на селе</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="favorites.html" class="text-xl hover:scale-110 transition-transform">❤️</a>
+            <div class="w-9 h-9 rounded-full flex items-center justify-center overflow-hidden bg-polyana">
+                <img src="assets/logo.png" id="header-avatar" alt="Лого" loading="lazy" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/40x40/DDE59B/3A7843?text=🌾'">
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto pb-16" id="feed-container"></main>
+
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#F7F5F0]/95 backdrop-blur-xl border-t border-[#EFECE6] py-2 px-3 flex justify-around items-center z-50 text-[10px]">
+        <a href="index.html" class="flex flex-col items-center text-les font-semibold"><span>✨</span><span>Лента</span></a>
+        <a href="blog.html" class="flex flex-col items-center text-stone-400"><span>📖</span><span>Блог</span></a>
+        <a href="calendar.html" class="flex flex-col items-center text-stone-400"><span>📅</span><span>Календарь</span></a>
+        <a href="psychology.html" class="flex flex-col items-center text-stone-400"><span>🤍</span><span>Психология</span></a>
+        <a href="recipes.html" class="flex flex-col items-center text-stone-400"><span>🍲</span><span>Рецепты</span></a>
+    </nav>
+
+    <div id="comments-modal" class="fixed inset-0 bg-stone-900/40 z-[60] hidden flex-col justify-end transition-opacity">
+        <div class="bg-white w-full max-w-md mx-auto rounded-t-3xl h-[65vh] flex flex-col shadow-2xl transform translate-y-full transition-transform duration-300" id="comments-panel">
+            <div class="flex justify-between items-center p-4 border-b border-[#EFECE6]">
+                <h3 class="font-bold text-les font-brand">Комментарии</h3>
+                <button onclick="closeComments()" class="text-stone-400 hover:text-stone-600 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="comments-list" class="flex-1 overflow-y-auto p-4 space-y-4 bg-[#F7F5F0]"></div>
+            <div class="p-3 border-t border-[#EFECE6] bg-white flex gap-2 items-center">
+                <input type="text" id="comment-input" class="flex-1 bg-[#F7F5F0] border border-[#EFECE6] rounded-full px-4 py-2.5 text-xs outline-none focus:border-luga transition-colors" placeholder="Написать комментарий...">
+                <button onclick="addComment()" class="bg-luga text-white px-4 py-2.5 rounded-full text-xs font-bold font-brand shadow-sm">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = {
+            first_name: 'Гость',
+            photo_100: 'https://via.placeholder.com/100/DDE59B/3A7843?text=👩‍🌾'
+        };
+
+        if (window.vkBridge) {
+            vkBridge.send('VKWebAppInit').then(() => {
+                return vkBridge.send('VKWebAppGetUserInfo');
+            }).then(data => {
+                if (data && data.first_name) {
+                    currentUser.first_name = data.first_name;
+                    currentUser.photo_100 = data.photo_100;
+                }
+            }).catch(error => console.log('Открыто не в ВК, используем режим Гостя', error));
+        }
+
+        const posts = [
+            { id: 'main-6', images: ['assets/hunter-boots.jpg'], tag: '#красота', tagColor: 'bg-schastye', title: 'Эстетика луж: культовые сапоги Hunter', text: 'Кто сказал, что практичная загородная обувь не может быть стильной? Когда переезжаешь на свою землю, резиновые сапоги становятся не просто функциональной необходимостью, а главным элементом осеннего гардероба. И здесь безусловным фаворитом остаются культовые Hunter.\n\nИх история началась больше века назад, и сегодня они — абсолютный символ британского загородного шика. Надеваем их с плотными гольфами, объемным свитером крупной вязки, накидываем тренч или стеганую куртку — и идеальный образ для прогулок по лесу готов! В них можно смело шагать по лужам, собирать грибы или позировать для красивых кадров на фоне золотой листвы. Деревенская жизнь может и должна быть элегантной!' },
+            { id: 'main-5', images: ['assets/cabin.jpg'], tag: '#переезд', tagColor: 'bg-les', title: 'Дом с душой: почему мы выбираем избу', text: 'Когда мы задумываемся о переезде в село, в голове часто возникает образ идеального деревянного дома. И это совершенно не случайно. Настоящая деревянная изба (пусть и в современном, минималистичном прочтении) — это место, которое дышит вместе с вами.\n\nЗапах нагретого дерева по утрам, мягкий скрип половиц, которые помнят шаги прошлых поколений, и невероятный уют, который физически невозможно воссоздать в бетонной городской коробке. Жизнь в таком доме меняет ваше внутреннее состояние: вы начинаете просыпаться с первыми лучами солнца и заваривать чай, просто слушая тишину. Это не просто переезд, это возвращение к себе настоящей.' },
+            { id: 'main-4', images: ['assets/harvest.jpg'], tag: '#работа', tagColor: 'bg-luga', title: 'Искусство большого урожая', text: 'Работа на земле — это не просто физический труд, это постоянный, глубокий диалог с природой. В наших проектов мы часто говорим о том, что каждый посаженный росток требует внимания, понимания процессов и огромной любви. Сбор урожая — это финал долгого пути, когда ты видишь реальный результат своих ежедневных стараний.\n\nВ этом году природа щедро ответила на нашу заботу. И знаете что? Нет ничего вкуснее томата, сорванного с собственной ветки, или хрустящего перца, выращенного без капли химии. Это та самая настоящая, первозданная роскошь, доступная каждому, кто не боится испачкать руки в земле. Современное фермерство — это модно, технологично и безумно красиво.' },
+            { id: 'main-1', images: ['assets/autumn-table.jpg'], tag: '#красота', tagColor: 'bg-schastye', title: 'Магия осенней сервировки', text: 'Осень — это время, когда хочется перенести красоту увядающей природы прямо в дом. Маленькие декоративные тыквы, небрежно разложенные на льняной скатерти, винтажные столовые приборы с легкой патиной и теплый свет зажженных свечей превращают самый обычный обед в настоящий ритуал.\n\nПопробуйте замедлиться: достаньте красивую посуду не для праздника, а для себя. Жизнь за городом учит нас тому, что смена сезонов — это лучший повод для создания уюта.' },
+            { id: 'main-2', images: ['assets/autumn-basket.jpg'], tag: '#красота', tagColor: 'bg-schastye', title: 'Рыжее золото осени', text: 'Тыквы — это не просто основа для согревающих супов и ароматных пирогов, но и, пожалуй, самый стильный природный декор. Охапка желтых листьев, плетеная корзина и пара ярких тыкв на крыльце или кухонном столе моментально задают настроение всему дому.\n\nЭто время печь пироги с корицей, кутаться в объемные шерстяные кардиганы и наблюдать через окно веранды, как природа неспешно готовится к зимнему сну.' },
+            { id: 'main-3', images: ['assets/autumn-mug.jpg'], tag: '#красота', tagColor: 'bg-schastye', title: 'Тепло в каждой детали', text: 'Когда за окном холодает, дом окончательно становится нашим главным местом силы. Тяжелые керамические кружки с травяным чаем, деревянные доски с историей, спелые тыквы и мягкий вечерний свет.\n\nИменно в таких, казалось бы, простых вещах кроется настоящая эстетика сельской жизни. Это те самые драгоценные моменты, которые хочется ставить на паузу и просто проживать, чувствуя абсолютную гармонию вокруг.' }
+        ];
+
+        for (let i = posts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [posts[i], posts[j]] = [posts[j], posts[i]];
+        }
+
+        let activePostId = null;
+
+        function renderFeed() {
+            const container = document.getElementById('feed-container');
+            const favorites = JSON.parse(localStorage.getItem('favPosts')) || [];
+            
+            container.innerHTML = posts.map(post => {
+                const isLiked = favorites.some(fav => fav.id === post.id);
+                const heartIcon = isLiked ? '❤️' : '🖤';
+                
+                const postComments = JSON.parse(localStorage.getItem('comments_' + post.id)) || [];
+                const commentsCount = postComments.length;
+                const commentsCounterHtml = commentsCount > 0 ? `<span class="text-[10px] text-stone-500 font-bold ml-1">${commentsCount}</span>` : '';
+
+                const postDataStr = encodeURIComponent(JSON.stringify({
+                    id: post.id, img: post.images[0], tag: post.tag, tagColor: post.tagColor, title: post.title, text: post.text
+                }));
+
+                const imagesHtml = post.images.map(img => 
+                    `<img src="${img}" loading="lazy" class="min-w-full aspect-square object-cover snap-center" alt="Фото" onerror="this.src='https://via.placeholder.com/600x600/F7F5F0/2C2C2A?text=Фото'">`
+                ).join('');
+
+                const arrowsHtml = post.images.length > 1 ? `
+                    <button onclick="scrollCarousel('${post.id}', -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 w-8 h-8 rounded-full flex items-center justify-center text-stone-600 shadow-md z-10">❮</button>
+                    <button onclick="scrollCarousel('${post.id}', 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 w-8 h-8 rounded-full flex items-center justify-center text-stone-600 shadow-md z-10">❯</button>
+                ` : '';
+
+                return `
+                <article class="bg-white/90 backdrop-blur-sm border-b border-[#EFECE6] pb-4 relative">
+                    <div id="carousel-${post.id}" class="relative flex overflow-x-auto snap-x snap-mandatory hide-scrollbar">
+                        ${imagesHtml}
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1 ${post.tagColor} text-white rounded-full text-[10px] shadow-sm font-brand z-10">${post.tag}</span>
+                    ${arrowsHtml}
+                    <div class="px-4 pt-3 pb-1 flex gap-4 items-center">
+                        <button onclick="toggleLike(this, '${postDataStr}')" class="text-2xl transition-transform hover:scale-110">${heartIcon}</button>
+                        <button onclick="openComments('${post.id}')" class="flex items-center text-[22px] text-stone-300 hover:text-stone-500 transition-colors">
+                            💬${commentsCounterHtml}
+                        </button>
+                    </div>
+                    <div class="px-5 space-y-1">
+                        <h3 class="font-bold text-base text-stone-800 font-brand">${post.title}</h3>
+                        <p id="desc-${post.id}" class="text-xs text-stone-600 leading-relaxed line-clamp-2 transition-all duration-300 whitespace-pre-line">${post.text}</p>
+                        <button onclick="toggleText('desc-${post.id}', this)" class="text-[10px] text-stone-400 font-semibold mt-1 uppercase tracking-wide">ещё...</button>
+                    </div>
+                </article>`;
+            }).join('');
+        }
+
+        function openComments(postId) {
+            activePostId = postId;
+            const modal = document.getElementById('comments-modal');
+            const panel = document.getElementById('comments-panel');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { panel.classList.remove('translate-y-full'); }, 10);
+            renderCommentsList();
+        }
+
+        function closeComments() {
+            const modal = document.getElementById('comments-modal');
+            const panel = document.getElementById('comments-panel');
+            panel.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden'); modal.classList.remove('flex');
+                activePostId = null;
+                renderFeed(); 
+            }, 300);
+        }
+
+        function renderCommentsList() {
+            const list = document.getElementById('comments-list');
+            const postComments = JSON.parse(localStorage.getItem('comments_' + activePostId)) || [];
+            
+            if (postComments.length === 0) {
+                list.innerHTML = `<div class="text-center text-stone-400 text-xs mt-10">Пока нет комментариев. Будьте первыми!</div>`;
+                return;
+            }
+
+            list.innerHTML = postComments.map(comment => `
+                <div class="flex gap-3">
+                    <img src="${comment.avatar}" loading="lazy" class="w-8 h-8 rounded-full object-cover shrink-0 border border-[#EFECE6]">
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-[#EFECE6] text-xs text-stone-700 flex-1">
+                        <span class="font-bold font-brand text-les block mb-1">${comment.name}</span>
+                        ${comment.text}
+                    </div>
+                </div>
+            `).join('');
+            list.scrollTop = list.scrollHeight;
+        }
+
+        function addComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (!text || !activePostId) return;
+
+            const postComments = JSON.parse(localStorage.getItem('comments_' + activePostId)) || [];
+            postComments.push({ 
+                text: text, 
+                name: currentUser.first_name,
+                avatar: currentUser.photo_100,
+                date: new Date().toISOString() 
+            });
+            localStorage.setItem('comments_' + activePostId, JSON.stringify(postComments));
+            
+            input.value = '';
+            renderCommentsList();
+        }
+
+        document.getElementById('comment-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addComment();
+        });
+
+        function scrollCarousel(id, direction) {
+            const container = document.getElementById('carousel-' + id);
+            container.scrollBy({ left: direction * container.clientWidth, behavior: 'smooth' });
+        }
+
+        function toggleText(id, btn) {
+            const el = document.getElementById(id);
+            el.classList.toggle('line-clamp-2');
+            btn.innerText = el.classList.contains('line-clamp-2') ? 'ещё...' : 'скрыть';
+        }
+
+        function toggleLike(btn, postDataStr) {
+            const post = JSON.parse(decodeURIComponent(postDataStr));
+            let favorites = JSON.parse(localStorage.getItem('favPosts')) || [];
+            const index = favorites.findIndex(fav => fav.id === post.id);
+            if (index !== -1) { favorites.splice(index, 1); btn.innerHTML = '🖤'; } 
+            else { favorites.push(post); btn.innerHTML = '❤️'; }
+            localStorage.setItem('favPosts', JSON.stringify(favorites));
+        }
+
+        renderFeed();
+    </script>
+</body>
+</html>
